@@ -1,0 +1,19 @@
+#include<stdio.h>
+#include<math.h>
+int main()
+{
+	int a,b,i;
+	b=0;
+	printf("输入整数a:");
+	scanf("%d",&a);
+	for(i=2;i<a;i++)
+	{
+		if(a%i==0)
+			b=1;
+	}
+	if(b==0)
+		printf("%d是素数\n",a);
+	else
+		printf("%d不是素数\n",a);
+	return 0;
+}
