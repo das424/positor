@@ -1,0 +1,32 @@
+#include<stdio.h>
+#include<string.h>
+int main ()
+{
+	char str[255];
+	int length;
+	int max=0;
+	int i,j,k,n;
+	gets(str);
+	length=strlen(str);
+	for (i=0;i<length;i++) 
+	{
+		for (j=i+1;j<length;j++)
+		{
+			for (k=i;k<j;k++)//从本次字符串数组循环的头开始判断并找到相同字符时停止 
+			{
+				if (str[k]==str[j])
+				{
+					n=j;
+					j=length;
+					k=j;
+				}
+			}
+		if (n-i>max)//记录最大的长度 
+			max=n-i;
+		}
+	}
+	if (max == 0)//如果无重复max=length 
+			max = length;
+	printf("%d\n",max);
+	return 0;
+ }
