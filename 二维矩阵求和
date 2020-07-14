@@ -1,0 +1,23 @@
+#include<stdio.h>
+int main()
+{
+	int a[6][6],b[6]={0};
+	int i,j,m,n;
+	printf("输入m和n:");
+	scanf("%d%d",&m,&n);
+	printf("输入矩阵a中的元素:\n");
+	for(i=0;i<m;i++)
+		for(j=0;j<n;j++)
+			scanf("%d",&a[i][j]);
+    for(i=0;i<m;i++)
+        for(j=0;j<n;j++)
+		    b[i]+=a[i][j];
+	for(i=0;i<n;i++)
+	{
+		printf("第%d行的和为%d",i+1,b[i]);
+		printf(" ");
+	}
+		printf("\n");
+	
+	return 0;
+}
