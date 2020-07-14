@@ -1,0 +1,31 @@
+#include<stdio.h>
+int sum(int x,int n)
+{
+	int s=0,a;
+
+	if(n==1)
+		return x;
+	else
+	s=(-x)*sum(x,n-1);
+}
+int a(int x,int n)
+{
+	int s=0;
+	if(n==1)
+	   s=x;
+	else 
+		s=a(x,n-1)+sum(x,n);
+	return s;
+}
+	
+
+int main()
+{
+	int x,n;
+	printf("Enter x and n:");
+	scanf("%d",&x);
+	scanf("%d",&n);
+	
+	printf("%d\n",a(x,n));
+	return 0;
+}
