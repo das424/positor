@@ -1,0 +1,20 @@
+#include<stdio.h>
+#include<math.h> 
+int main()
+{
+	float a,b,c,d;
+	double S;
+	printf("请输入三边长度:\n");
+	scanf("%f %f %f",&a,&b,&c);
+	if(a+b>c&&b+c>a&&a+c>b)
+	{
+		d=(a+b+c)/2;
+		S=sqrt(d*(d-a)*(d-b)*(d-c));
+		printf("此三角形面积为：%f\n",S);
+	}
+	else
+	{
+		printf("您所输入的三边不构成三角形!\n");
+	}
+	return 0;
+}
