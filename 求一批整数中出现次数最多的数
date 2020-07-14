@@ -1,0 +1,33 @@
+#include<stdio.h>
+int main()
+{
+	int a;
+	int i,n,t,max=0;
+	int b[10]={0};
+	printf("输入n:");
+	scanf("%d",&n);
+	printf("输入n个整数:");
+	for(i=0;i<n;i++)
+	{
+		scanf("%d",&a);
+		while(a!=0)
+		{
+			b[a%10]++;
+			a/=10;
+		}
+	}
+	for(i=0;i<10;i++)
+	{
+		if(max<b[i])
+		{
+			max=b[i];
+		}
+	}
+	for(i=0;i<10;i++)
+	{
+		if(b[i]==max)
+			printf("出现最多的数字是%d\n",i);
+	}
+	
+	return 0;
+}
