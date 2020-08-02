@@ -1,0 +1,27 @@
+/*用C写一个输入的整数，倒着输出整数的函数，要求用递归方法。
+*输入描述:一个整数
+*输出描述:该整数的倒序输出
+*思路:输入的数与10取模，取出最后一位，增加一个变量保存结果，取出的位存在结果中，每调用一次就和10相乘使其向前移位
+*/
+#include<stdio.h>
+int res(int num,int result)
+{
+    if(num<10)
+    {
+        return num+result;
+    }
+    else
+    {
+        result+=num%10;
+        result*=10;
+        return res(num/10,result);
+    }
+}
+void main()
+{
+    int num,result=0;
+    printf("请输入一个整数:");
+    scanf("%d",&num);
+    result=res(num,result);
+    printf("倒序之后为%d\n",result);
+}
