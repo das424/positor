@@ -1,0 +1,26 @@
+/*求x的n次方
+*输入:x,n的值
+*输出:x的n次方
+*思路:重复使用子函数多次计算
+#include<stdio.h>
+int sum(int x,int n)
+{
+	int s=0;
+	
+	if(n==1)
+		s=x;
+	else
+		s=x*sum(x,n-1);
+	return s;
+}
+	
+
+int main()
+{
+	int x,n;
+	scanf("%d",&x);
+	scanf("%d",&n);
+	
+	printf("%d\n",sum(x,n));
+	return 0;
+}
