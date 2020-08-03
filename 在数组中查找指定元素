@@ -1,6 +1,7 @@
 /*在数组中查找指定元素
 *输入:数组和要查找的元素
 *输出:对应元素下标
+*/
 int search(int list[],int n,int x);
 int main()
 {
