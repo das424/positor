@@ -1,0 +1,36 @@
+/*在数组中查找指定元素
+*输入:数组和要查找的元素
+*输出:对应元素下标
+int search(int list[],int n,int x);
+int main()
+{
+	int list[10];
+	int x,n,i,flag;
+	printf("输入n(1<n<=10):");
+	scanf("%d",&n);
+	printf("输入%d个数据:",n);
+	for(i=0;i<n;i++)
+		scanf("%d",&list[i]);
+	printf("输入你要查找的数据：");
+	scanf("%d",&x);
+	flag=search(list,n,x);
+	if(flag==-1)
+		printf("Not found\n");
+	else
+		printf("其下标为%d\n",flag);
+	return 0;
+}
+
+int search(int list[],int n,int x)
+{
+	int i;
+	for(i=0;i<n;i++){
+		if(x==list[i])
+		{
+			return i;
+			break;
+		}
+		if(i==n-1)
+			return -1;
+	}	
+}
