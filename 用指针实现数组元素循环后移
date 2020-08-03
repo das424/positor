@@ -1,0 +1,32 @@
+/*用指针实现数组元素循环后移
+*输入:数组元素及后移次数
+*输出:执行操作后的数组
+*/
+#include<stdio.h>
+void yd(int *p,int n,int m);
+int main()
+{
+	int a[100];
+	int i,n,m;
+	printf("请输入数字个数和位移次数:");
+	scanf("%d""%d",&n,&m);
+	printf("请输入这%d个数",n);
+	for(i=0;i<n;i++)
+		scanf("%d",&a[i]);
+	yd(a,n,m);
+	for(i=0;i<n;i++)
+		printf("%d ",a[i]);
+	return 0;
+}
+
+void yd(int *p,int n,int m)
+{
+	int i,j,k;
+	for(i=1;i<=m;i++)
+	{
+		k=p[n-1];
+		for(j=n-1;j>0;j--)
+			p[j]=p[j-1];
+		p[0]=k;
+	}
+}
