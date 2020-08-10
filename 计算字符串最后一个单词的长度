@@ -1,0 +1,27 @@
+/*计算字符串最后一个单词的长度，单词以空格隔开。
+*输入描述:一行字符串，非空，长度小于5000。
+*输出描述:整数N，最后一个单词的长度。
+*/
+#include<stdio.h>
+#include<string.h>
+int go(char s[]);
+void main()
+{
+	char s[100];
+	go(s);
+}
+int go(char s[])
+{
+	char str[100]={0};
+	int len,i;
+	printf("输入字符:");
+	gets(str);
+	len=strlen(str);
+	for(i=len-1;i>=0;i--)
+	{
+		if(str[i]==' ')
+			break;
+	}
+	printf("最后一个单词长度为%d\n",len-1-i);
+	return 0;
+}
