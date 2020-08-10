@@ -1,0 +1,59 @@
+/*在字符串中找出连续最长的数字串
+*输入描述:输入一个字符串。
+*输出描述:输出字符串中最长的数字字符串和它的长度，中间用逗号间隔。
+如果有相同长度的串，则要一块儿输出（中间不间隔），但是长度还是一串的长度，与数字字符串间用逗号间隔。
+*/
+#include<stdio.h>
+#include<string.h>
+int main()
+{
+    char str[1000];
+    int b[1000]={0};
+    int i,j,k,len,cnt=0,cnt0=0,max=0;
+	printf("输入字符串:");
+    scanf("%s",&str);
+	cnt=0,cnt0=0,max=0,j=0;
+	len=strlen(str);
+	for(i=0;i<len;)
+	{
+		if((str[i]>='0')&&(str[i]<='9'))
+		{
+			while((str[i]>='0')&&(str[i]<='9'))
+			{
+				cnt++;
+				i++;
+			}
+			if(cnt>max)
+				max=cnt;           
+		}
+		else
+		{
+			cnt=0;
+			i++;
+		}
+	}
+	for(i=0;i<len;)
+	{
+		if((str[i]>='0')&&(str[i]<='9'))
+		{
+			while((str[i]>='0')&&(str[i]<='9'))
+			{
+				cnt0++;
+                i++;
+            }
+            if(cnt0==max)
+				b[j++]=i-max;  
+		}
+            else
+            {
+                cnt0=0;
+                i++;
+			}              
+	}
+	for(k=0;k<j;k++)
+		for(i=b[k];i<b[k]+max;i++)
+			printf("最长数字串为%c",str[i]);               
+		printf(",");
+		printf("长度为%d\n",max);
+    return 0;
+}
