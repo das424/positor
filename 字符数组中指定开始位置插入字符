@@ -1,0 +1,49 @@
+/*在字符数组中指定开始位置插入字符串
+输入：字符串，插入字符串，插入位置
+输出：完成操作的字符串
+*/
+#include<stdio.h>
+#include<string.h>
+int main() //字符数组中在指定位置插入字符串
+{
+    char a[20] = {0};
+    char b[20] = {0};
+    char c[20] = {0};
+    int i, j = 0, n, lengtha, lengthb, lengthc;
+ 
+    printf("请输入字符串：");
+    scanf("%s", a);
+    getchar();
+    printf("请输入插入字符串：");
+    scanf("%s", b);
+    getchar();
+    printf("请输入插入位置：");
+    scanf("%d", &n);
+    getchar();
+    lengtha = strlen(a);
+    lengthb = strlen(b);
+ 
+    for(i = n; i < lengtha; i++)
+    {
+        c[j] = a[i];
+        j++;
+    }
+    lengthc = j;
+    j = n;
+ 
+    for(i = 0; i < lengthb; i++)
+    {
+        a[j] = b[i];
+        j++;
+    }
+ 
+    for(i = 0; i < lengthc; i++)
+    {
+       a[j] = c[i];
+       j++;
+    }
+ 
+    printf("结果：%s\n",a);
+ 
+    return 0;
+}
