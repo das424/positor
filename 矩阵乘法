@@ -1,0 +1,28 @@
+#include <stdio.h>
+void main()
+{
+	int ch1[3][3],ch2[3][3],ch3[3][3];
+	int (*p)[3],(*q)[3],(*a)[3],i,j,k;
+	p=ch1;
+	q=ch2;
+	a=ch3;
+	printf("数组ch1 = ");
+	for(i=0;i<3;i++)
+		for(j=0;j<3;j++)
+			scanf("%d",*(p+i)+j);
+		printf("数组ch2 = ");
+	for(i=0;i<3;i++)
+		for(j=0;j<3;j++)
+			scanf("%d",*(q+i)+j);
+	for(i=0;i<3;i++)
+	{
+		for(j=0;j<3;j++)
+		{
+			*(*(a+i)+j)=0;
+			for(k=0;k<3;k++)
+			*(*(a+i)+j)+=*(*(ch1+i)+k)**(*(ch2+k)+j);
+			printf("%-4d",*(*(a+i)+j));
+		}						
+		printf("\n");
+	}
+}
