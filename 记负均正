@@ -1,0 +1,30 @@
+/*首先输入要输入的整数个数n，然后输入n个整数。输出为n个整数中负数的个数，和所有正整数的平均值，结果保留一位小数。
+输入描述:
+首先输入一个正整数n，
+然后输入n个整数。
+输出描述:
+输出负数的个数，和所有正整数的平均值。
+*/
+#include<stdio.h>
+#include<stdlib.h>
+int main(){
+	int n,i,k,j; 
+	double s=0.0;
+	k=j=0;
+	int *p=(int*)malloc(n*sizeof(int));	
+	while(scanf("%d",&n)!=EOF){		
+		for(i=0;i<n;i++)
+		{
+			scanf("%d",p+i);
+		}
+		for(i=0;i<n;i++)
+		{
+			if(*(p+i)<0)j++;
+			if(*(p+i)>0){s+=*(p+i);k++;}
+		}
+		s=s/k;
+		printf("%d ",j);
+		printf("%.1f\n",s);
+	}
+	return 0;
+}
