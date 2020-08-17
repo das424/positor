@@ -1,0 +1,27 @@
+/*第一个和最后一个位置互换，第二个和倒数第二个位置互换，以此类推。
+输入:字符串
+输出:完成操作后的字符串
+*/
+#include<stdio.h>
+#include<string.h>
+ 
+void reverse(char* str){
+	int len,i;
+	char temp;
+	if(NULL==str){
+		return ;
+	}
+	len = strlen(str); 
+	for(i=0;i<len/2;i++){
+		temp = str[i];
+		str[i] = str[len-1-i];	
+		str[len-1-i] = temp;
+	} 
+} 
+void main(){ 
+	char str[100];
+	printf("please input a string : ");
+	scanf("%s",str);
+	reverse(str);	
+	printf("%s\n",str);
+}
