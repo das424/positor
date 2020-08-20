@@ -1,0 +1,42 @@
+/*编写代码，移除未排序链表中的重复节点。保留最开始出现的节点。
+示例1:输入：[1, 2, 3, 3, 2, 1]
+输出：[1, 2, 3]
+示例2:输入：[1, 1, 1, 1, 2]
+输出：[1, 2]
+*/
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     struct ListNode *next;
+ * };
+ */
+
+
+struct ListNode* removeDuplicateNodes(struct ListNode* head){
+	struct ListNode *pwork = head, *q, *pre, *p ;//pwork为工作遍历结点
+	
+	while(pwork != NULL){
+		
+			q = pwork;//q记录当前pwork结点的值
+			pre = pwork;//待删除结点的前驱结点
+			p = pre -> next;//待删除结点
+			
+		while(p != NULL){
+			
+			if(q -> val == p -> val){//找到重复结点
+				pre -> next = p -> next;//删除结点
+				p = pre -> next;//指针移向下一个
+			}
+			else{
+				pre = pre -> next;
+				p = p -> next;
+			}
+	
+		}
+		
+		pwork = pwork -> next;
+	}
+
+	return head;
+}
