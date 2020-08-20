@@ -1,0 +1,55 @@
+/*给定两个大小为 m 和 n 的正序（从小到大）数组 nums1 和 nums2。
+请你找出这两个正序数组的中位数，并且要求算法的时间复杂度为 O(log(m + n))。
+你可以假设 nums1 和 nums2 不会同时为空。
+示例 1:
+nums1 = [1, 3]
+nums2 = [2]
+则中位数是 2.0
+示例 2:
+nums1 = [1, 2]
+nums2 = [3, 4]
+则中位数是 (2 + 3)/2 = 2.5
+思路：已知两有序数组，数组之间先排序，偏移指针，保存上一个值和当前值
+结果区分奇数/偶数，奇数则为当前值；偶数则需要（上一个值+当前值）/2获取
+*/
+double findMedianSortedArrays(int* nums1, int nums1Size, int* nums2, int nums2Size){
+    int cernterSite = 0;
+    int i = 0;
+    int j = 0;
+    int k = 0;
+    double preValue = 0;
+    double curValue = 0;
+    cernterSite = (nums1Size + nums2Size)/2;
+    for(k = 0; k <= cernterSite; k++){
+        if(i < nums1Size && j < nums2Size){
+            if(*(nums1 + i) > *(nums2 + j)){
+                preValue = curValue;
+                curValue = *(nums2 + j);
+                j++;
+                continue; 
+            }else{
+                preValue = curValue;
+                curValue = *(nums1 + i);
+                i++;
+                continue;
+            }
+        }
+        if(j < nums2Size){
+            preValue = curValue;
+            curValue = *(nums2 + j);
+            j++;
+            continue;
+        }
+        if(i < nums1Size){
+            preValue = curValue;
+            curValue = *(nums1 + i);
+            i++;
+            continue;
+        }
+    }
+    if((nums1Size + nums2Size)%2){
+        return curValue;
+    }else{
+        return (preValue+curValue)/2;
+    }
+}
