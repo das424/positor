@@ -1,0 +1,68 @@
+/*给定一个 m x n 的矩阵，如果一个元素为 0，则将其所在行和列的所有元素都设为 0。请使用原地算法。
+示例 1:
+输入: 
+[
+  [1,1,1],
+  [1,0,1],
+  [1,1,1]
+]
+输出: 
+[
+  [1,0,1],
+  [0,0,0],
+  [1,0,1]
+]
+示例 2:
+输入: 
+[
+  [0,1,2,0],
+  [3,4,5,2],
+  [1,3,1,5]
+]
+输出: 
+[
+  [0,0,0,0],
+  [0,4,5,0],
+  [0,3,1,0]
+]
+*/
+void SetZero(int** matrix, int matrixSize, int matrixColSize, int i, int j)
+{
+    for (int m = 0; m < matrixColSize; m++) {
+        matrix[i][m] = 0;
+    }
+    for (int n = 0; n < matrixSize; n++) {
+        matrix[n][j] = 0;
+    }
+}
+
+
+void setZeroes(int** matrix, int matrixSize, int* matrixColSize)
+{
+    if (matrix == NULL || matrixSize <= 0 || *matrixColSize <= 0) {
+        return;
+    }
+    int** buffer = (int**)calloc(matrixSize, sizeof(int*));
+    if (buffer == NULL) {
+        return;
+    }
+    for (int i = 0; i < matrixSize; i++) {
+        buffer[i] = (int*)calloc(*matrixColSize,sizeof(int));
+        if (buffer[i] == NULL) {
+            return;
+        }
+        memcpy(buffer[i], matrix[i], sizeof(int)*(*matrixColSize));
+    }
+    for (int i = 0; i < matrixSize; i++) {
+        for (int j = 0; j < *matrixColSize; j++) {
+            if (matrix[i][j] == 0) {
+                SetZero(buffer, matrixSize, *matrixColSize, i, j);
+            }
+        }
+    }
+    for (int i = 0; i < matrixSize; i++) {
+        memcpy(matrix[i], buffer[i], sizeof(int)*(*matrixColSize));
+        free(buffer[i]);
+    }
+    free(buffer);
+}
