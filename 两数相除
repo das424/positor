@@ -1,0 +1,110 @@
+/*给定两个整数，被除数 dividend 和除数 divisor。将两数相除，要求不使用乘法、除法和 mod 运算符。
+返回被除数 dividend 除以除数 divisor 得到的商。
+整数除法的结果应当截去（truncate）其小数部分，例如：truncate(8.345) = 8 以及 truncate(-2.7335) = -2
+示例 1:
+输入: dividend = 10, divisor = 3
+输出: 3
+解释: 10/3 = truncate(3.33333..) = truncate(3) = 3
+示例 2:
+输入: dividend = 7, divisor = -3
+输出: -2
+解释: 7/-3 = truncate(-2.33333..) = -2
+*/
+int divide(int dividend, int divisor){
+    int     iRet    = 0;
+    int     iFlag   = 0;
+    int     isSpe   = 0;
+
+    int     iDividend   = dividend;
+    int     iDivisor    = divisor;
+
+    if ((dividend & 0x80000000) ^ (divisor & 0x80000000))
+    {
+        //被除数和除数符号位不相同，则为负值
+        iFlag = -1;
+    }
+    else
+    {
+        //被除数和除数符号位不相同，则为正值
+        iFlag = 1;
+    }
+
+//    printf("D1=%08x, D2=%08x, iFlag=%d\n", dividend, divisor, iFlag);
+
+
+    if (iDividend < 0)
+    {
+        if (iDividend == 0x80000000)
+        {
+            if (iDivisor == -1)
+            {
+                iDividend = 0x7fffffff;
+                return iDividend;
+            }
+            else if (iDivisor == 1)
+            {
+                return iDividend;
+            }
+            else if (iDivisor == 0x80000000)
+            {
+                iRet = 1;
+                return iRet;
+            }
+            else
+            {
+                isSpe = 1;
+                iDividend = 0x7fffffff;
+            }
+        }
+        else
+        {
+            iDividend = 0 - iDividend;
+        }
+    }
+
+    if (iDivisor < 0)
+    {
+        if (iDivisor == 0x80000000)
+        {
+            if (iDividend == 0x80000000)
+            {
+                iRet = 1;
+            }
+            else
+            {
+                iRet = 0;
+            }
+            return iRet;
+        }
+        else
+        {
+            iDivisor = 0 - iDivisor;
+        }
+    }
+
+    if (1 == iDivisor)
+    {
+        iRet = iDividend;
+    }
+    else
+    {
+        while (iDividend >= iDivisor)
+        {
+            iRet += 1;
+            iDividend -= iDivisor;
+
+            if (isSpe == 1)
+            {
+                iDividend += 1;
+                isSpe = 0;
+            }
+        }
+    }
+
+    if (-1 == iFlag)
+    {
+        iRet = 0 - iRet;
+    }
+
+    return iRet;
+}
