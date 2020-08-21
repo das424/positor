@@ -1,0 +1,50 @@
+/*给定一个单链表 L：L0→L1→…→Ln-1→Ln ，
+将其重新排列后变为： L0→Ln→L1→Ln-1→L2→Ln-2→…
+你不能只是单纯的改变节点内部的值，而是需要实际的进行节点交换。
+示例 1:
+给定链表 1->2->3->4, 重新排列为 1->4->2->3.
+示例 2:
+给定链表 1->2->3->4->5, 重新排列为 1->5->2->4->3.
+*/
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     struct ListNode *next;
+ * };
+ */
+void reorderList(struct ListNode* head){
+if(!head||head->next==NULL||head->next->next==NULL) return head;
+else{
+int i,len=0;
+struct ListNode *p=head,*q=head,*r,*m,*n;
+while(p)
+{
+    p=p->next;
+    len++;
+}
+for(i=1;i<(len/2+1);i++) q=q->next;
+p=q->next;
+q->next=NULL;
+r=(struct ListNode*)malloc(sizeof(struct ListNode));
+r->next=NULL;
+while(p)
+{
+    q=p->next;
+    p->next=r->next;
+    r->next=p;
+    p=q;
+}
+q=head;
+p=r->next;
+while(p)
+{
+    m=p->next;
+    n=q->next;
+    p->next=q->next;
+    q->next=p;
+    p=m;
+    q=n;
+}
+}
+}
