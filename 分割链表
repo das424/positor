@@ -1,0 +1,52 @@
+/*编写程序以 x 为基准分割链表，使得所有小于 x 的节点排在大于或等于 x 的节点之前。如果链表中包含 x，x 只需出现在小于 x 的元素之后(如下所示)。
+分割元素 x 只需处于“右半部分”即可，其不需要被置于左右两部分之间。
+示例:
+输入: head = 3->5->8->5->10->2->1, x = 5
+输出: 3->1->2->10->5->5->8
+*/
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     struct ListNode *next;
+ * };
+ */
+struct ListNode* partition(struct ListNode* head, int x)
+{
+	if (head == NULL || head->next == NULL)
+		return head;
+	struct ListNode newhead1;
+	struct ListNode newhead2;
+	newhead1.next = NULL;
+	newhead2.next = NULL;
+	struct ListNode* cur = head;
+	struct ListNode* tmp = NULL;
+	while (cur)
+	{
+		struct ListNode* next = cur->next;
+		if (cur->val < x)
+		{
+			if (newhead1.next == NULL)
+			{
+				tmp = cur;
+			}
+			struct ListNode* cur1 = newhead1.next;
+			newhead1.next = cur;
+			cur->next = cur1;
+		}
+		else
+		{
+			struct ListNode* cur2 = newhead2.next;
+			newhead2.next = cur;
+			cur->next = cur2;
+		}
+		cur = next;
+	}
+	if (tmp != NULL)
+	{
+		tmp->next = newhead2.next;
+        return newhead1.next;
+	}
+
+	return newhead2.next;
+}
