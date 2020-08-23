@@ -1,0 +1,100 @@
+/*快速排序是对冒泡排序的一种改进。
+快速排序由C. A. R. Hoare在1962年提出。它的基本思想是：通过一趟排序将要排序的数据分割成独立的两部分，
+其中一部分的所有数据都比另外一部分的所有数据都要小，然后再按此方法对这两部分数据分别进行快速排序，
+整个排序过程可以递归进行，以此达到整个数据变成有序序列。
+*/
+#include<stdio.h>
+void bubble_sort(int* a,int n);
+void Quick_sort(int* a, int n);
+void Quick_sort(int* a, int left, int right);
+int median(int* a, int left, int right);
+void swap(int &a, int &b);
+
+int main(){
+	int i;
+	int a[10] = { 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
+	printf("原始数组顺序为:\n");
+	for (i = 0; i < 10; i++)
+	printf("%2d",a[i]);
+	printf("\n");
+	Quick_sort(a, 10);
+	printf("排序之后的数组顺序为\n");
+	for (i = 0; i < 10; i++)
+		printf("%2d",a[i]);
+	
+	return 0;
+}
+
+void bubble_sort(int* a,int n){
+	int flag = 0;
+	int tmp = 0;
+	for (int p = n - 1; p; p--){
+		flag = 0;
+		for (int i = 0; i < p; i++){
+			if (a[i] > a[i + 1]){
+				tmp = a[i];
+				a[i] = a[i + 1];
+				a[i + 1] = tmp;
+				flag = 1; 
+			}
+			if (flag == 0){
+				break;
+			}
+		}  
+	} 
+}  
+
+
+void Quick_sort(int* a, int n){
+	Quick_sort(a, 0, n - 1);
+}
+
+void Quick_sort(int* a, int left, int right){
+	int pivot = 0;
+	int cutoff = 2;
+	int low = 0;
+	int high = 0;
+
+	if (cutoff <= right - left)	{
+		pivot = median(a, left, right);
+		low = left;
+		high = right - 1;
+		while (1)		{
+			while (a[++low] < pivot);
+			while (a[--high] > pivot);
+			if (low < high){
+				swap(a[low], a[high]);
+			}else{
+				break;
+			}
+		}
+
+		swap(a[low], a[right - 1]);
+		Quick_sort(a, left, low - 1);
+		Quick_sort(a, low + 1, right);
+	}
+	else{
+		bubble_sort(a + left, right - left + 1);
+	}
+}
+
+int median(int* a, int left, int right){
+	int center = left + (right - left) / 2;  
+	if (a[left] > a[center]){
+		swap(a[left], a[center]);
+	}
+	if (a[left] > a[right]){
+		swap(a[left], a[right]);
+	}
+	if (a[center] > a[right]){
+		swap(a[center], a[right]);
+	}
+	swap(a[center], a[right - 1]);
+	return a[right - 1];
+}
+
+void swap(int &a, int &b){
+	int tmp = a;
+	a = b;
+	b = tmp;
+}
