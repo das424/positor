@@ -1,0 +1,52 @@
+/*二叉树数据结构TreeNode可用来表示单向链表（其中left置空，right为下一个链表节点）。
+实现一个方法，把二叉搜索树转换为单向链表，要求依然符合二叉搜索树的性质，转换操作应是原址的，也就是在原始的二叉搜索树上直接修改。
+返回转换后的单向链表的头节点。
+示例：
+输入： [4,2,5,1,3,null,6,0]
+输出： [0,null,1,null,2,null,3,null,4,null,5,null,6]
+*/
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+
+struct TreeNode *head;
+struct TreeNode *prev;
+
+static void visit_node(struct TreeNode* node)
+{
+    if (head == NULL) {
+        head = node;
+        prev = head;
+        prev->left = NULL;
+    } else {
+        prev->right = node;
+        prev = node;
+        node->left = NULL; /* 将节点的left指针置NULL */
+    }
+}
+
+static void inorder(struct TreeNode* node)
+{
+    if (node != NULL) {
+        if(node->left != NULL)
+            inorder(node->left);
+        visit_node(node);
+        if (node->right != NULL)
+            inorder(node->right);
+    }
+}
+
+struct TreeNode* convertBiNode(struct TreeNode* root)
+{
+    if (root == NULL)
+        return NULL;
+
+    head = NULL;
+    inorder(root);
+    return head;
+}
