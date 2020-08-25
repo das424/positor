@@ -1,0 +1,44 @@
+/*给定一个二叉搜索树的根节点 root，返回树中任意两节点的差的最小值。
+示例：
+输入: root = [4,2,6,1,3,null,null]
+输出: 1
+解释:
+注意，root是树节点对象(TreeNode object)，而不是数组。
+
+给定的树 [4,2,6,1,3,null,null] 可表示为下图:
+
+          4
+        /   \
+      2      6
+     / \    
+    1   3  
+
+最小的差值是 1, 它是节点1和节点2的差值, 也是节点3和节点2的差值。
+*/
+int abs(int a){
+    if(a>=0)return a;
+    else return -a;
+}
+void inorder(struct TreeNode* root,int *nums,int* length){   
+    //递归中序遍历二叉搜索树，并且把结果存在数组中
+    if(root==NULL) return;
+    inorder(root->left,nums,length);
+    nums[++(*length)]=root->val;
+    inorder(root->right,nums,length);
+    return;
+}
+int minDiffInBST(struct TreeNode* root){
+    int i,j;
+    int n=-1;
+    int min = 8888888;
+    int* nums = (int*)malloc(sizeof(int)*10000);//创造一个长度10000的空间，下面的递归遍历进行赋值
+    inorder(root,nums,&n);//这个n对应长度应该是n个数减 1
+    for(i=0;i<n;++i){
+        for(j=i+1;j<=n;++j){
+            if(min > abs(nums[i]-nums[j])){
+                min = abs(nums[i]-nums[j]);
+            }
+        }
+    }
+    return min;
+}
