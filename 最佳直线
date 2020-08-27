@@ -1,0 +1,77 @@
+/*给定一个二维平面及平面上的 N 个点列表Points，其中第i个点的坐标为Points[i]=[Xi,Yi]。请找出一条直线，其通过的点的数目最多。
+
+设穿过最多点的直线所穿过的全部点编号从小到大排序的列表为S，你仅需返回[S[0],S[1]]作为答案，若有多条直线穿过了相同数量的点，则选择S[0]值较小的直线返回，S[0]相同则选择S[1]值较小的直线返回。
+
+示例：
+
+输入： [[0,0],[1,1],[1,0],[2,0]]
+输出： [0,2]
+解释： 所求直线穿过的3个点的编号为[0,2,3]
+*/
+#define YX_MAX     3.4e+38
+
+typedef struct _hash_st {
+    float key;
+    int s;
+    int e;
+    int val;
+    UT_hash_handle hh;
+}hash_st;
+
+int ret[2];
+
+//【算法思路】hash。判断每个点和后面点的斜率，以斜率作为hash的key.
+// 注意float的精度可以满足要求，但是要处理diff_x == 0和diff_y == 0的情况。
+int* bestLine(int** points, int pointsSize, int* pointsColSize, int* returnSize){
+    hash_st *pool = (hash_st *)calloc(pointsSize * pointsSize, sizeof(hash_st));
+    int psize = 0;
+
+    hash_st **heads = (hash_st **)calloc(pointsSize - 1, sizeof(hash_st *));
+    hash_st *maxh = NULL;
+
+    for(int i = 0; i < pointsSize - 1; i++) {
+        hash_st *head = heads[i];
+        for(int j = i + 1; j < pointsSize; j++) {
+            float yx;
+            //先查找斜率是否找到，找不到则记录一个新hash
+            int xx = points[i][0] - points[j][0];
+            int yy = points[i][1] - points[j][1];
+
+            if(xx == 0) {
+                yx = YX_MAX;
+            } else if(yy == 0) {
+                yx = 0.0;   //此处注意，直接计算会失真！！
+            } else {
+                yx = (float)yy / xx;
+            }
+            hash_st *tmph;
+            HASH_FIND(hh, head, &yx, sizeof(float), tmph);
+            if(tmph == NULL) {
+                hash_st *new = &pool[psize++];
+                new->key = yx;
+                new->s = i;
+                new->e = j;
+                new->val = 1;
+
+                if(maxh == NULL) {
+                    maxh = new;
+                }
+
+                HASH_ADD_KEYPTR(hh, head, &(new->key), sizeof(float), new);
+            } else {
+                tmph->val++;
+                if(tmph->val > maxh->val) {
+                    maxh = tmph;
+                }
+            }
+        }
+    }
+
+    ret[0] = maxh->s;
+    ret[1] = maxh->e;
+
+    printf("max = %d\n", maxh->val);
+
+    *returnSize = 2;
+    return ret;
+}
