@@ -1,0 +1,50 @@
+/*在 N * N 的网格上，我们放置一些 1 * 1 * 1  的立方体。
+
+每个值 v = grid[i][j] 表示 v 个正方体叠放在对应单元格 (i, j) 上。
+
+请你返回最终形体的表面积。
+
+ 
+
+示例 1：
+
+输入：[[2]]
+输出：10
+示例 2：
+
+输入：[[1,2],[3,4]]
+输出：34
+示例 3：
+
+输入：[[1,0],[0,2]]
+输出：16
+*/
+#define MIN(a,b)    ((a) < (b) ? (a) : (b))
+
+int surfaceArea(int** grid, int gridSize, int* gridColSize)
+{
+    int i, j;
+    int sum = 0;
+    int dup = 0;
+
+    /* 统计总的立方体个数，然后减去重叠的面数量 */
+    for (i = 0; i < gridSize; i++) {
+        for (j = 0; j < gridSize; j ++) {
+            /* 如果当前grid没有立方体，则不会有面积计算 */
+            if (grid[i][j]) {
+                // 统计总数
+                sum += grid[i][j];
+
+                // 统计自身重叠的面的数量
+                dup += grid[i][j] ? (grid[i][j] - 1) : 0;
+
+                // 每个grid都和自己的右侧、下侧相邻grid进行判断比较，计算最小的重叠面数量
+                if (i + 1 < gridSize) {
+                    dup += MIN(grid[i][j], grid[i + 1][j]);
+                }
+                if (j + 1 < gridSize) {
+                    dup += MIN(grid[i][j], grid[i][j + 1]);
+                }
+            }
+        }
+    }
