@@ -1,0 +1,170 @@
+/*在一个二维的花园中，有一些用 (x, y) 坐标表示的树。由于安装费用十分昂贵，你的任务是先用最短的绳子围起所有的树。
+只有当所有的树都被绳子包围时，花园才能围好栅栏。你需要找到正好位于栅栏边界上的树的坐标。
+
+示例 1:
+输入: [[1,1],[2,2],[2,0],[2,4],[3,3],[4,2]]
+输出: [[1,1],[2,0],[4,2],[3,3],[2,4]]
+示例 2:
+输入: [[1,2],[2,2],[4,2]]
+输出: [[1,2],[2,2],[4,2]]
+*/
+struct node {
+    int x;
+    int y;
+    int used;
+};
+
+int findTop(struct node *now, struct node *peer, struct node *nodes, int cnt, int right) {
+    int pos = -1;
+    float k;
+    float maxk;
+    //分割线的k和b (直线方程kx + b)
+    float basek = (peer->y - now->y) * 1.0 / (peer->x - now->x);
+    float baseb = now->y - basek * now->x;
+    for (int i = 0; i < cnt; i++) {
+        //已使用或垂直，不可取
+        if (nodes[i].used || now->x == nodes[i].x) {
+            continue;
+        }
+        //计算斜率
+        k = (nodes[i].y - now->y) * 1.0 / (nodes[i].x - now->x);
+        // 右移，在基准线以下
+        if (right && (basek * nodes[i].x + baseb) > nodes[i].y * 1.0) {
+            continue;
+        }
+        //左移，在基准线以上
+        if (!right && (basek * nodes[i].x + baseb) < nodes[i].y * 1.0) {
+            continue;
+        }
+        //取最大斜率
+        if (pos == -1 || maxk < k) {
+            pos = i;
+            maxk = k;
+        }
+        //最大斜率相同时，可能同一线上多个点
+        if (maxk == k) {
+            if (right && nodes[pos].x < nodes[i].x) {
+                //往右，取最大的
+                pos = i;
+            } else if(!right && nodes[pos].x > nodes[i].x) {
+                //往左，取最小的
+                pos = i;
+            }
+        }
+    }
+
+    //标识最大斜率上的点
+    for (int i = 0; i < cnt && pos != -1; i++) {
+        if (nodes[i].used) {
+            continue;
+        }
+        k = (nodes[i].y - now->y) * 1.0 / (nodes[i].x - now->x);
+        if (maxk == k) {
+            nodes[i].used = 1;
+        }
+    }
+    return pos;
+}
+
+int** outerTrees(int** points, int pointsSize, int* pointsColSize, int* returnSize, int** returnColumnSizes){
+    struct node *nodes = NULL;
+    // 左边界上下点
+    int leftTop = -1;
+    int leftBot = -1;
+    //右边界上下点
+    int rightBot = -1;
+    int rightTop = -1;
+    int *outColSize = NULL;
+    int **out = 0;
+    //左右边界横坐标值
+    int minx;
+    int maxx;
+    int cnt = 0;
+    if (points == NULL || *points == NULL || pointsColSize == NULL || returnSize == NULL || returnColumnSizes == NULL) {
+        return NULL;
+    }
+    nodes = (struct node *)malloc(sizeof(struct node) * pointsSize);
+    if (nodes == NULL) {
+        return NULL;
+    }
+    memset(nodes, 0, sizeof(struct node) * pointsSize);
+    minx = points[0][0];
+    maxx = minx;
+
+    // 查找左右边界横坐标
+    for (int i = 0; i < pointsSize; i++) {
+        nodes[i].x = points[i][0];
+        nodes[i].y = points[i][1];
+        if (nodes[i].x < minx) {
+            minx = nodes[i].x;
+        } else if(nodes[i].x > maxx) {
+            maxx = nodes[i].x;
+        }
+    }
+    //查找位于左右边界上的极点
+    for (int i = 0; i < pointsSize; i++) {
+        if (minx == points[i][0]) {
+            nodes[i].used = 1;
+            if (leftTop == -1 || nodes[i].y > nodes[leftTop].y){
+                leftTop = i;
+            }
+            if (leftBot == -1 || nodes[i].y < nodes[leftBot].y){
+                leftBot = i;
+            }
+        }
+        if (maxx == points[i][0]) {
+            nodes[i].used = 1;
+            if (rightBot == -1 || nodes[i].y < nodes[rightBot].y){
+                rightBot = i;
+            }
+            if (rightTop == -1 || nodes[i].y > nodes[rightTop].y){
+                rightTop = i;
+            }
+        }
+    }
+    //如果横坐标相同，必定一条线上，全输出
+    if (minx == maxx) {
+        for (int i = 0; i < pointsSize; i++) {
+            nodes[i].used = 1;
+        }
+    } else {
+        //循环处理
+        for (int i = 0; i < pointsSize && leftTop != -1; i++) {
+            //左上和右上极点连线后，从左上极点开始找位于线上方且最大斜率的点
+            leftTop = findTop(nodes + leftTop, nodes + rightTop, nodes, pointsSize, 1);
+        }
+        
+        for (int i = 0; i < pointsSize && rightBot != -1; i++) {
+            //右下和左上极点连线后，从右下极点开始找位于线下方且最大斜率的点
+            rightBot = findTop(nodes + rightBot, nodes + leftBot, nodes, pointsSize, 0);
+        }
+    }
+    for (int i = 0; i < pointsSize; i++) {
+        if (nodes[i].used) {
+            cnt++;
+        }
+    }
+
+    *returnSize = cnt;
+    out = malloc(sizeof(int *) * cnt);
+    memset(out, 0, sizeof(int *) * cnt);
+    outColSize = malloc(sizeof(int) * cnt);
+    memset(outColSize, 0, sizeof(int) * cnt);
+    for(int i = 0; i < cnt; i++) {
+        outColSize[i] = 2;
+    }
+    *returnColumnSizes = outColSize;
+    
+    for (int i = 0, j = 0; i < pointsSize; i++) {
+        if (!nodes[i].used) {
+            continue;
+        }
+        out[j] = malloc(sizeof(int) * 2);
+        out[j][0] = nodes[i].x;
+        out[j][1] = nodes[i].y;
+        j++;
+    }
+
+    free(nodes);
+    return out;
+}
